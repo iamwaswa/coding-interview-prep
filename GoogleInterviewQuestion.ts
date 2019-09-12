@@ -96,3 +96,5 @@ console.log(hasMatchingPairs([], 0));
 console.log(hasMatchingPairs([1], 1));
 console.log(hasMatchingPairs([1,2,4,4], 8));
 console.log(hasMatchingPairs([4,4,2,1], 8));
+console.log(hasMatchingPairs([1,2,3,4], 5));
+console.log(hasMatchingPairs([4,3,2,1], 5));
