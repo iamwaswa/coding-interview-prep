@@ -91,3 +91,8 @@ const hasMatchingPairs = (array: number[], sum: number): boolean => {
 
   return false;
 };
+
+console.log(hasMatchingPairs([], 0));
+console.log(hasMatchingPairs([1], 1));
+console.log(hasMatchingPairs([1,2,4,4], 8));
+console.log(hasMatchingPairs([4,4,2,1], 8));
