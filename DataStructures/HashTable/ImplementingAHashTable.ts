@@ -16,15 +16,23 @@ export default class HashTable<T> {
     return hash;
   }
 
-  // * Time Complexity: O(k) where k is the length of the key
+  // * Time Complexity: O(n)
   public set = (key: string, value: T): void => {
     const index = this.hashFunction(key);
 
     if (!this.data[index]) {
       this.data[index] = [];
-    }
+    } 
 
-    this.data[index].push([key, value]);
+    const foundIndex = this.data[index].findIndex(
+      ([foundKey,]: [string, T]): boolean => foundKey === key
+    );
+
+    if (foundIndex === -1) {
+      this.data[index].push([key, value]);
+    } else {
+      this.data[index][foundIndex] = [key, value];
+    }
   }
 
   // * Time Complexity: O(n)
