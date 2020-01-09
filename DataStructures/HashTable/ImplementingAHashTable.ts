@@ -53,4 +53,15 @@ export default class HashTable<T> {
 
     throw new Error(`The given key: ${key}, does not correspond to any entry!`);
   }
+
+  // * Time Complexity: O(s * d)
+  // * where s is the size of the data array
+  // * where d is the depth of one slot in data array
+  public keys = (): string[] => {
+    return this.data.reduce(
+      (result: string[], entry: [string, T][]): string[] => {
+        return [...result, ...entry.map(([key,]: [string, T]): string => key)];
+      }, []
+    )
+  }
 }
