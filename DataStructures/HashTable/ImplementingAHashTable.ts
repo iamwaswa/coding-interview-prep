@@ -1,10 +1,8 @@
 export default class HashTable<T> {
-  private data: Array<[string, T]>;
-  private indicesWithValues: Set<number>;
+  private data: Array<Array<[string, T]>>;
 
   constructor(size: number) {
     this.data = new Array(size);
-    this.indicesWithValues = new Set<number>();
   }
 
   // * Time Complexity: O(n)
@@ -18,23 +16,30 @@ export default class HashTable<T> {
     return hash;
   }
 
-  // * Time Complexity: O(n)
+  // * Time Complexity: O(k) where k is the length of the key
   public set = (key: string, value: T): void => {
     const index = this.hashFunction(key);
 
-    // * Avoid collisions
     if (!this.data[index]) {
-      this.data[index] = [key, value];
+      this.data[index] = [];
     }
-    
-    this.indicesWithValues.add(index);
+
+    this.data[index].push([key, value]);
   }
 
   // * Time Complexity: O(n)
   public get = (key: string): T => {
     const index = this.hashFunction(key);
-    if (this.indicesWithValues.has(index)) {
-      const [, value] = this.data[index];
+
+    let result: undefined | [string, T];
+    if (this.data[index]) {
+      result = this.data[index].find(
+        ([foundKey,]: [string, T]): boolean => foundKey === key
+      );
+    }
+
+    if (result) {
+      const [, value] = result;
       return value;
     }
 
