@@ -21,7 +21,12 @@ export default class HashTable<T> {
   // * Time Complexity: O(n)
   public set = (key: string, value: T): void => {
     const index = this.hashFunction(key);
-    this.data[index] = [key, value];
+
+    // * Avoid collisions
+    if (!this.data[index]) {
+      this.data[index] = [key, value];
+    }
+    
     this.indicesWithValues.add(index);
   }
 
