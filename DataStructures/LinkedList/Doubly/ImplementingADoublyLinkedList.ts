@@ -1,6 +1,6 @@
 type Node<T> = {
   value: T,
-  before?: Node<T>,
+  previous?: Node<T>,
   next: Node<T>,
 };
 
@@ -53,41 +53,37 @@ export default class DoublyLinkedList<T> {
   }
 
   // * Time Complexity: O(1)
-  public append = (value: T): DoublyLinkedList<T> => {
+  public append = (value: T): void => {
     this.tail.next = {
       value,
-      before: this.tail,
+      previous: this.tail,
       next: null,
     };
 
     this.tail = this.tail.next;
 
     this.length++;
-
-    return this;
   }
 
   // * Time Complexity: O(1)
-  public prepend = (value: T): DoublyLinkedList<T> => {
+  public prepend = (value: T): void => {
     this.head = {
       value,
       next: this.head,
     };
 
-    this.head.next.before = this.head;
+    this.head.next.previous = this.head;
 
     this.length++;
-
-    return this;
   }
 
   // * Time Complexity: O(n)
-  public insert = (index: number, value: T): DoublyLinkedList<T> => {
+  public insert = (index: number, value: T): void => {
     this.sanityCheckIndex(index);
 
     if (index === 0) {
       this.prepend(value);
-      return this;
+      return;
     }
 
     const node = this.findNodeBeforeIndex(index);
@@ -97,24 +93,22 @@ export default class DoublyLinkedList<T> {
       next: node.next,
     };
 
-    node.next.before = node;
+    node.next.previous = node;
 
-    node.next.next.before = node.next;
+    node.next.next.previous = node.next;
 
     this.length++;
-
-    return this;
   }
 
   // * Time Complexity: O(n)
-  public remove = (index: number): DoublyLinkedList<T> => {
+  public remove = (index: number): void => {
     this.sanityCheckIndex(index, true);
 
     if (index === 0) {
       this.head = this.head.next;
-      this.head.before = undefined;
+      this.head.previous = undefined;
       this.length--;
-      return this;
+      return;
     }
 
     const node = this.findNodeBeforeIndex(index);
@@ -123,15 +117,13 @@ export default class DoublyLinkedList<T> {
       this.tail = node;
       node.next = null;
       this.length--;
-      return this;
+      return;
     }
 
     node.next = node.next.next;
 
-    node.next.before = node;
+    node.next.previous = node;
 
     this.length--;
-
-    return this;
   }
 }
