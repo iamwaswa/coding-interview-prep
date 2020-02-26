@@ -115,4 +115,19 @@ export default class SinglyLinkedList<T> {
 
     this.length--;
   }
+
+  // * Time Complexity: O(n)
+  public reverse = (): void => {
+    let prev = null;
+    let next = null;
+
+    for (let current = this.head; current !== null; current = next) {
+      next = current.next;
+      current.next = prev;
+      prev = current;
+    }
+
+    this.tail = this.head;
+    this.head = prev;
+  }
 }
