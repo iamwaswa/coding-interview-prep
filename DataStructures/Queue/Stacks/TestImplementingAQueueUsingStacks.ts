@@ -1,4 +1,4 @@
-import Queue from "./ImplementingAQueue";
+import Queue from "./ImplementingAQueueUsingStacks";
 
 const queue = new Queue();
 console.log(queue);
