@@ -23,7 +23,7 @@ export default class Stack<T> {
   public push = (value: T): Node<T> => {
     if (this.length === 0) {
       this.top = { value, next: null };
-      this.bottom = { value, next: null };
+      this.bottom = this.top;
     } else {
       const previousTop = this.top;
       this.top = { value, next: this.top };
