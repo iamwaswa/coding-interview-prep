@@ -2,10 +2,17 @@ import Stack from "./ImplementingAStackUsingALinkedList";
 
 const stack = new Stack();
 
-stack.push(0);
-stack.push(1);
-stack.push(2);
-stack.pop();
-stack.pop();
-stack.pop();
+console.log(stack);
+console.log(stack.push(0));
+console.log(stack);
+console.log(stack.push(1));
+console.log(stack);
+console.log(stack.push(2));
+console.log(stack);
+console.log(stack.pop());
+console.log(stack);
+console.log(stack.pop());
+console.log(stack);
+console.log(stack.pop());
+console.log(stack);
 console.log(stack.isEmpty());
