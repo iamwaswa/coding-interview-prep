@@ -1,4 +1,4 @@
-import Stack from "./ImplementingAStack";
+import Stack from "./ImplementingAStackUsingALinkedList";
 
 const stack = new Stack();
 
