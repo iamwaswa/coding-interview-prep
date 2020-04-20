@@ -1,60 +1,28 @@
-type Node<T> = {
-  value: T;
-  next: Node<T>;
-};
-
 export default class Stack<T> {
-  private top: Node<T>;
-  private bottom: Node<T>;
-  private length: number;
+  private values: Array<T>;
 
   constructor() {
-    this.top = null;
-    this.bottom = null;
-    this.length = 0;
+    this.values = [];
   }
 
   // * Time Complexity: O(1)
   public peek = (): T => {
-    return this.top ? this.top.value : null;
+    return this.values.length > 0 ? this.values[this.values.length - 1] : null;
   };
 
   // * Time Complexity: O(1)
-  public push = (value: T): Node<T> => {
-    if (this.length === 0) {
-      this.top = { value, next: null };
-      this.bottom = { value, next: null };
-    } else {
-      const previousTop = this.top;
-      this.top = { value, next: this.top };
-      this.top.next = previousTop;
-    }
-
-    this.length++;
-
-    return this.top;
+  public push = (value: T): T => {
+    this.values.push(value);
+    return this.values[this.values.length - 1];
   };
 
   // * Time Complexity: O(1)
-  public pop = (): Node<T> => {
-    if (this.length === 0) {
-      return null;
-    } else if (this.length === 1) {
-      const previousTop = this.top;
-      this.top = null;
-      this.bottom = null;
-      this.length--;
-      return previousTop;
-    } else {
-      const previousTop = this.top;
-      this.top = this.top.next;
-      this.length--;
-      return previousTop;
-    }
+  public pop = (): T => {
+    return this.values.pop();
   };
 
   // * Time Complexity: O(1)
   public isEmpty = (): boolean => {
-    return this.length === 0;
+    return this.values.length === 0;
   };
 }
