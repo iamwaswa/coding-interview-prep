@@ -13,35 +13,6 @@ export default class BinarySearchTree<T> {
     this.root = null;
   }
 
-  // * Time Complexity: O(log(n))
-  private findParent = (node: Node<T>): Node<T> => {
-    let currentNode = this.root;
-    let parentNode = null;
-
-    while (currentNode !== null) {
-      if (node.value === currentNode.value) {
-        return parentNode;
-      } else if (node.value < currentNode.value) {
-        parentNode = currentNode;
-        currentNode = currentNode.left;
-      } else if (node.value > currentNode.value) {
-        parentNode = currentNode;
-        currentNode = currentNode.right;
-      }
-    }
-    
-    return parentNode;
-  };
-
-  // * Time Complexity: O(log(n))
-  private findLeftMostChild = (node: Node<T>): Node<T> => {
-    if (node.left) {
-      return this.findLeftMostChild(node.left);
-    } else {
-      return node;
-    }
-  };
-
   // * Time Complexity: O(1)
   getRoot = (): Node<T> => { 
     return this.root;
@@ -97,57 +68,82 @@ export default class BinarySearchTree<T> {
   };
   
   // * Time Complexity: O(log(n))
-  remove = (value: T): void => {
-    const node = this.lookup(value);
-
-    if (!node) {
-      return;
+  remove = (value: T): boolean => {
+    if (!this.root) {
+      return false;
     }
 
-    if (!node.right && !node.left) {
-      const parentNode = this.findParent(node);
+    let currentNode = this.root;
+    let parentNode = null;
+    while (currentNode) {
+      if (value < currentNode.value) {
+        parentNode = currentNode;
+        currentNode = currentNode.left;
+      } else if (value > currentNode.value) {
+        parentNode = currentNode;
+        currentNode = currentNode.right;
+      } else if (currentNode.value === value) {
+        // * We have a match, get to work!
+        
+        if (currentNode.right === null) {
+          // * Option 1: No right child: 
+          
+          if (parentNode === null) {
+            // * Current node is the root with no right child
+            this.root = currentNode.left;
+          } else {
+            if (currentNode.value < parentNode.value) {
+              // * current value < parent value, make current left child a child of parent
+              parentNode.left = currentNode.left;
+            
+            } else if (currentNode.value > parentNode.value) {
+              // * current value > parent value, make left child a right child of parent
+              parentNode.right = currentNode.left;
+            }
+          }
+        } else if (currentNode.right.left === null) {
+          // * Option 2: Right child which doesn't have a left child
+          currentNode.right.left = currentNode.left;
+          
+          if (parentNode === null) {
+            this.root = currentNode.right;
+          } else {
+            if (currentNode.value < parentNode.value) {
+              // * current value < parent value, make right child of the left the parent
+              parentNode.left = currentNode.right;
+            } else if (currentNode.value > parentNode.value) {
+              // * current value > parent value, make right child a right child of the parent
+              parentNode.right = currentNode.right;
+            }
+          }
+        } else {
+          // * Option 3: Right child that has a left child
+          // * Find the Right child's left most child
+          let leftmost = currentNode.right.left;
+          let leftmostParent = currentNode.right;
+          while (leftmost.left !== null) {
+            leftmostParent = leftmost;
+            leftmost = leftmost.left;
+          }
+          
+          // * Parent's left subtree is now leftmost's right subtree
+          leftmostParent.left = leftmost.right;
+          leftmost.left = currentNode.left;
+          leftmost.right = currentNode.right;
 
-      if (!parentNode) {
-        this.root = null;
-        return;
-      }
-
-      if (parentNode.left.value === node.value) {
-        parentNode.left = null;
-      }
-
-      if (parentNode.right.value === node.value) {
-        parentNode.right = null;
+          if (parentNode === null) {
+            this.root = leftmost;
+          } else {
+            if (currentNode.value < parentNode.value) {
+              parentNode.left = leftmost;
+            } else if (currentNode.value > parentNode.value) {
+              parentNode.right = leftmost;
+            }
+          }
+        }
+        
+        return true;
       }
     }
-
-    if (!node.right) {
-      const parentNode = this.findParent(node);
-
-      if (!parentNode) {
-        this.root = node.left;
-        return;
-      }
-
-      if (parentNode.left.value === node.value) {
-        parentNode.left = node.left;
-      }
-
-      if (parentNode.right.value === node.value) {
-        parentNode.right = node.left;
-      }
-    }
-
-    const leftMostChildOfRight = this.findLeftMostChild(node.right);
-    
-    const parentOfLeftMostChildOfRight = this.findParent(leftMostChildOfRight);
-
-    if (leftMostChildOfRight.right) {
-      parentOfLeftMostChildOfRight.left = leftMostChildOfRight.right;
-      leftMostChildOfRight.right = null;
-    }
-
-    node.value = leftMostChildOfRight.value;
-    parentOfLeftMostChildOfRight.right = null;
-  };
+  }
 };

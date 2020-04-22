@@ -39,3 +39,5 @@ console.log(tree.lookup(1));
 console.log(JSON.stringify(traverse(tree.getRoot()), null, 2));
 console.log(tree.lookup(9));
 console.log(tree.lookup(99));
+console.log(tree.remove(15));
+console.log(JSON.stringify(traverse(tree.getRoot()), null, 2));
