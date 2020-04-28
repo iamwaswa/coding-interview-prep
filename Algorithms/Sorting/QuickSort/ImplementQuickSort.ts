@@ -10,7 +10,7 @@ export const quickSort = <T>(
   }
 
   let pivotIndex = right;
-  for (let i = 0; i < pivotIndex; i++) {
+  for (let i = left; i < pivotIndex; i++) {
     if (items[i] > items[pivotIndex]) {
       // * Swap items[i] with items[pivotIndex - 1]
       [items[i], items[pivotIndex - 1]] = [items[pivotIndex - 1], items[i]];
